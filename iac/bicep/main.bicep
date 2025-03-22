@@ -12,10 +12,10 @@ param rglocation string = 'australiaeast'
 param cost_centre_tag string = 'MCAPS'
 
 @description('System Owner tag that will be applied to all resources in this deployment')
-param owner_tag string = 'whirlpool@contoso.com'
+param owner_tag string = 'dev@dataleague.com.au'
 
 @description('Subject Matter EXpert (SME) tag that will be applied to all resources in this deployment')
-param sme_tag string ='sombrero@contoso.com'
+param sme_tag string ='dev@dataleague.com.au'
 
 @description('Timestamp that will be appendedto the deployment name')
 param deployment_suffix string = utcNow()
@@ -24,7 +24,7 @@ param deployment_suffix string = utcNow()
 param create_purview bool = false
 
 @description('Flag to indicate whether to enable integration of data platform resources with either an existing or new Purview resource')
-param enable_purview bool = true
+param enable_purview bool = false
 
 @description('Resource group where Purview will be deployed. Resource group will be created if it doesnt exist')
 param purviewrg string= 'rg-datagovernance'
@@ -137,19 +137,19 @@ module audit_integration './modules/audit.bicep' = if(enable_audit) {
 }
 
 //Deploy Microsoft Fabric Capacity
-module fabric_capacity './modules/fabric-capacity.bicep' = {
-  name: fabric_deployment_name
-  scope: fabric_rg
-  params:{
-    fabric_name: 'bafabric01'
-    location: fabric_rg.location
-    cost_centre_tag: cost_centre_tag
-    owner_tag: owner_tag
-    sme_tag: sme_tag
-    adminUsers: kv_ref.getSecret('fabric-capacity-admin-username')
-    skuName: 'F4' // Default Fabric Capacity SKU F2
-  }
-}
+//module fabric_capacity './modules/fabric-capacity.bicep' = {
+//  name: fabric_deployment_name
+//  scope: fabric_rg
+//  params:{
+//    fabric_name: 'bafabric01'
+//    location: fabric_rg.location
+//    cost_centre_tag: cost_centre_tag
+//    owner_tag: owner_tag
+//    sme_tag: sme_tag
+//    adminUsers: kv_ref.getSecret('fabric-capacity-admin-username')
+//    skuName: 'F4' // Default Fabric Capacity SKU F2
+//  }
+//}
 
 //Deploy SQL control DB 
 module controldb './modules/sqldb.bicep' = {
